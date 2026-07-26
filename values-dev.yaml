@@ -55,7 +55,7 @@ ingress:
     nginx.ingress.kubernetes.io/rewrite-target: /
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  host: demo.vinothdevops.online   
+  host: demo.vinothdevops.online
       #paths:
       #  - path: /
       #    pathType: ImplementationSpecific
@@ -94,7 +94,7 @@ readinessProbe:
   httpGet:
     path: /health
     port: 8080
-    
+
 startupProbe:
   httpGet:
     path: /health
