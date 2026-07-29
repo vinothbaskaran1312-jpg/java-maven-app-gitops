@@ -1,0 +1,241 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"argoproj.io/v1alpha1","kind":"Application","metadata":{"annotations":{},"name":"demo-app","namespace":"argocd"},"spec":{"destination":{"namespace":"helm-dev","server":"https://kubernetes.default.svc"},"project":"default","source":{"path":"java-app-helm","repoURL":"https://github.com/vinothbaskaran1312-jpg/java-maven-app.git","targetRevision":"main"},"syncPolicy":{"automated":{"prune":true,"selfHeal":true},"syncOptions":["CreateNamespace=true"]}}}
+  creationTimestamp: "2026-07-05T09:23:57Z"
+  generation: 1257
+  name: demo-app
+  namespace: argocd
+  resourceVersion: "569971"
+  uid: c926214d-6891-44be-b49f-b2872dade7f8
+spec:
+  destination:
+    namespace: helm-dev
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: java-app-helm
+    repoURL: https://github.com/vinothbaskaran1312-jpg/java-maven-app.git
+    targetRevision: main
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+status:
+  controllerNamespace: argocd
+  health:
+    lastTransitionTime: "2026-07-25T19:25:17Z"
+    status: Healthy
+  history:
+  - deployStartedAt: "2026-07-18T14:45:45Z"
+    deployedAt: "2026-07-18T14:45:49Z"
+    id: 28
+    initiatedBy:
+      username: admin
+    revision: aba20372fba9079fffed5ce1075af60c2abfa5bb
+    source:
+      path: .
+      repoURL: https://github.com/vinothbaskaran1312-jpg/jenkins-demo-manifests
+      targetRevision: HEAD
+  - deployStartedAt: "2026-07-24T00:50:34Z"
+    deployedAt: "2026-07-24T00:50:36Z"
+    id: 29
+    initiatedBy:
+      username: admin
+    revision: aba20372fba9079fffed5ce1075af60c2abfa5bb
+    source:
+      path: .
+      repoURL: https://github.com/vinothbaskaran1312-jpg/jenkins-demo-manifests
+      targetRevision: HEAD
+  - deployStartedAt: "2026-07-24T04:18:53Z"
+    deployedAt: "2026-07-24T04:18:58Z"
+    id: 30
+    initiatedBy:
+      automated: true
+    revision: 7395b29cf05ee43610a6c7931949740fcb6e7714
+    source:
+      path: java-app-helm
+      repoURL: https://github.com/vinothbaskaran1312-jpg/java-maven-app.git
+      targetRevision: main
+  - deployStartedAt: "2026-07-25T11:50:25Z"
+    deployedAt: "2026-07-25T11:50:27Z"
+    id: 31
+    initiatedBy:
+      username: admin
+    revision: 7395b29cf05ee43610a6c7931949740fcb6e7714
+    source:
+      path: java-app-helm
+      repoURL: https://github.com/vinothbaskaran1312-jpg/java-maven-app.git
+      targetRevision: main
+  - deployStartedAt: "2026-07-25T15:05:30Z"
+    deployedAt: "2026-07-25T15:05:40Z"
+    id: 32
+    initiatedBy:
+      username: admin
+    revision: a71f55c0af199050bdb9f88d5002412027455a3c
+    source:
+      path: java-app-helm
+      repoURL: https://github.com/vinothbaskaran1312-jpg/java-maven-app.git
+      targetRevision: main
+  - deployStartedAt: "2026-07-25T15:09:17Z"
+    deployedAt: "2026-07-25T15:09:20Z"
+    id: 33
+    initiatedBy:
+      automated: true
+    revision: e5073da74fe178376a8ec5927fca2045c0c0b339
+    source:
+      path: java-app-helm
+      repoURL: https://github.com/vinothbaskaran1312-jpg/java-maven-app.git
+      targetRevision: main
+  - deployStartedAt: "2026-07-25T15:09:54Z"
+    deployedAt: "2026-07-25T15:09:56Z"
+    id: 34
+    initiatedBy:
+      username: admin
+    revision: e5073da74fe178376a8ec5927fca2045c0c0b339
+    source:
+      path: java-app-helm
+      repoURL: https://github.com/vinothbaskaran1312-jpg/java-maven-app.git
+      targetRevision: main
+  - deployStartedAt: "2026-07-25T17:05:00Z"
+    deployedAt: "2026-07-25T17:05:06Z"
+    id: 35
+    initiatedBy:
+      username: admin
+    revision: 5b8e158e4a414af04327ef7552c254302f2d523d
+    source:
+      path: java-app-helm
+      repoURL: https://github.com/vinothbaskaran1312-jpg/java-maven-app.git
+      targetRevision: main
+  - deployStartedAt: "2026-07-25T18:19:25Z"
+    deployedAt: "2026-07-25T18:19:29Z"
+    id: 36
+    initiatedBy:
+      username: admin
+    revision: 6cabc39f14a7084879181704e2482ab4e55d2757
+    source:
+      path: java-app-helm
+      repoURL: https://github.com/vinothbaskaran1312-jpg/java-maven-app.git
+      targetRevision: main
+  - deployStartedAt: "2026-07-25T19:21:29Z"
+    deployedAt: "2026-07-25T19:21:33Z"
+    id: 37
+    initiatedBy:
+      automated: true
+    revision: da478bed7376579159abc0bb82bc140c313c1534
+    source:
+      path: java-app-helm
+      repoURL: https://github.com/vinothbaskaran1312-jpg/java-maven-app.git
+      targetRevision: main
+  operationState:
+    finishedAt: "2026-07-25T19:21:34Z"
+    message: successfully synced (all tasks run)
+    operation:
+      initiatedBy:
+        automated: true
+      retry:
+        limit: 5
+      sync:
+        prune: true
+        revision: da478bed7376579159abc0bb82bc140c313c1534
+        source:
+          path: java-app-helm
+          repoURL: https://github.com/vinothbaskaran1312-jpg/java-maven-app.git
+          targetRevision: main
+        syncOptions:
+        - CreateNamespace=true
+    phase: Succeeded
+    startedAt: "2026-07-25T19:21:29Z"
+    syncResult:
+      resources:
+      - group: ""
+        hookPhase: Running
+        kind: ServiceAccount
+        message: serviceaccount/demo-app-java-maven-app unchanged
+        name: demo-app-java-maven-app
+        namespace: helm-dev
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: ""
+        hookPhase: Running
+        kind: Service
+        message: service/demo-app-java-maven-app unchanged
+        name: demo-app-java-maven-app
+        namespace: helm-dev
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: apps
+        hookPhase: Running
+        images:
+        - vinothbaskaran1985/java-maven-app:27
+        kind: Deployment
+        message: deployment.apps/demo-app-java-maven-app configured
+        name: demo-app-java-maven-app
+        namespace: helm-dev
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: networking.k8s.io
+        hookPhase: Running
+        kind: Ingress
+        message: ingress.networking.k8s.io/demo-app-java-maven-app unchanged
+        name: demo-app-java-maven-app
+        namespace: helm-dev
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      revision: da478bed7376579159abc0bb82bc140c313c1534
+      source:
+        path: java-app-helm
+        repoURL: https://github.com/vinothbaskaran1312-jpg/java-maven-app.git
+        targetRevision: main
+  reconciledAt: "2026-07-26T17:28:20Z"
+  resourceHealthSource: appTree
+  resources:
+  - kind: Service
+    name: demo-app-java-maven-app
+    namespace: helm-dev
+    status: Synced
+    version: v1
+  - kind: ServiceAccount
+    name: demo-app-java-maven-app
+    namespace: helm-dev
+    status: Synced
+    version: v1
+  - group: apps
+    kind: Deployment
+    name: demo-app-java-maven-app
+    namespace: helm-dev
+    status: Synced
+    version: v1
+  - group: networking.k8s.io
+    kind: Ingress
+    name: demo-app-java-maven-app
+    namespace: helm-dev
+    status: Synced
+    version: v1
+  sourceHydrator: {}
+  sourceType: Helm
+  summary:
+    externalURLs:
+    - http://demo.vinothdevops.online/
+    images:
+    - vinothbaskaran1985/java-maven-app:27
+  sync:
+    comparedTo:
+      destination:
+        namespace: helm-dev
+        server: https://kubernetes.default.svc
+      source:
+        path: java-app-helm
+        repoURL: https://github.com/vinothbaskaran1312-jpg/java-maven-app.git
+        targetRevision: main
+    revision: da478bed7376579159abc0bb82bc140c313c1534
+    status: Synced
