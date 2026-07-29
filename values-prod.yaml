@@ -55,7 +55,7 @@ ingress:
     nginx.ingress.kubernetes.io/rewrite-target: /
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  host: demo.vinothdevops.online
+  host: prod.vinothdevops.online
       #paths:
       #  - path: /
       #    pathType: ImplementationSpecific
