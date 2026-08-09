@@ -12,7 +12,7 @@ image:
   repository: vinothbaskaran1985/java-maven-app
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "31"
+  tag: "32"
 
 imagePullSecrets: []
 nameOverride: ""
