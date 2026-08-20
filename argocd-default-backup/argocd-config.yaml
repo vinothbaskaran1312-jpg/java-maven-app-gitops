@@ -1,0 +1,696 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  data:
+    resource.customizations.ignoreResourceUpdates.ConfigMap: |
+      jqPathExpressions:
+        # Ignore the cluster-autoscaler status
+        - '.metadata.annotations."cluster-autoscaler.kubernetes.io/last-updated"'
+        # Ignore the annotation of the legacy Leases election
+        - '.metadata.annotations."control-plane.alpha.kubernetes.io/leader"'
+    resource.customizations.ignoreResourceUpdates.Endpoints: |
+      jsonPointers:
+        - /metadata
+        - /subsets
+    resource.customizations.ignoreResourceUpdates.all: |
+      jsonPointers:
+        - /status
+    resource.customizations.ignoreResourceUpdates.apps_ReplicaSet: |
+      jqPathExpressions:
+        - '.metadata.annotations."deployment.kubernetes.io/desired-replicas"'
+        - '.metadata.annotations."deployment.kubernetes.io/max-replicas"'
+        - '.metadata.annotations."rollout.argoproj.io/desired-replicas"'
+    resource.customizations.ignoreResourceUpdates.argoproj.io_Application: |
+      jqPathExpressions:
+        - '.metadata.annotations."notified.notifications.argoproj.io"'
+        - '.metadata.annotations."argocd.argoproj.io/refresh"'
+        - '.metadata.annotations."argocd.argoproj.io/hydrate"'
+        - '.operation'
+    resource.customizations.ignoreResourceUpdates.argoproj.io_Rollout: |
+      jqPathExpressions:
+        - '.metadata.annotations."notified.notifications.argoproj.io"'
+    resource.customizations.ignoreResourceUpdates.autoscaling_HorizontalPodAutoscaler: |
+      jqPathExpressions:
+        - '.metadata.annotations."autoscaling.alpha.kubernetes.io/behavior"'
+        - '.metadata.annotations."autoscaling.alpha.kubernetes.io/conditions"'
+        - '.metadata.annotations."autoscaling.alpha.kubernetes.io/metrics"'
+        - '.metadata.annotations."autoscaling.alpha.kubernetes.io/current-metrics"'
+    resource.customizations.ignoreResourceUpdates.discovery.k8s.io_EndpointSlice: |
+      jsonPointers:
+        - /metadata
+        - /endpoints
+        - /ports
+    resource.exclusions: |
+      ### Network resources created by the Kubernetes control plane and excluded to reduce the number of watched events and UI clutter
+      - apiGroups:
+        - ''
+        - discovery.k8s.io
+        kinds:
+        - Endpoints
+        - EndpointSlice
+      ### Internal Kubernetes resources excluded reduce the number of watched events
+      - apiGroups:
+        - coordination.k8s.io
+        kinds:
+        - Lease
+      ### Internal Kubernetes Authz/Authn resources excluded reduce the number of watched events
+      - apiGroups:
+        - authentication.k8s.io
+        - authorization.k8s.io
+        kinds:
+        - SelfSubjectReview
+        - TokenReview
+        - LocalSubjectAccessReview
+        - SelfSubjectAccessReview
+        - SelfSubjectRulesReview
+        - SubjectAccessReview
+      ### Intermediate Certificate Request excluded reduce the number of watched events
+      - apiGroups:
+        - certificates.k8s.io
+        kinds:
+        - CertificateSigningRequest
+      - apiGroups:
+        - cert-manager.io
+        kinds:
+        - CertificateRequest
+      ### Cilium internal resources excluded reduce the number of watched events and UI Clutter
+      - apiGroups:
+        - cilium.io
+        kinds:
+        - CiliumIdentity
+        - CiliumEndpoint
+        - CiliumEndpointSlice
+      ### Kyverno intermediate and reporting resources excluded reduce the number of watched events and improve performance
+      - apiGroups:
+        - kyverno.io
+        - reports.kyverno.io
+        - wgpolicyk8s.io
+        kinds:
+        - PolicyReport
+        - ClusterPolicyReport
+        - EphemeralReport
+        - ClusterEphemeralReport
+        - AdmissionReport
+        - ClusterAdmissionReport
+        - BackgroundScanReport
+        - ClusterBackgroundScanReport
+        - UpdateRequest
+  kind: ConfigMap
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:40Z"
+    labels:
+      app.kubernetes.io/name: argocd-cm
+      app.kubernetes.io/part-of: argocd
+    name: argocd-cm
+    namespace: default
+    resourceVersion: "417178"
+    uid: 51187e12-2a2e-4ab0-80e0-34b4c3c11109
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:40Z"
+    labels:
+      app.kubernetes.io/name: argocd-cmd-params-cm
+      app.kubernetes.io/part-of: argocd
+    name: argocd-cmd-params-cm
+    namespace: default
+    resourceVersion: "417179"
+    uid: e7366701-87bd-4b12-89d8-cac8cb618467
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:40Z"
+    labels:
+      app.kubernetes.io/name: argocd-gpg-keys-cm
+      app.kubernetes.io/part-of: argocd
+    name: argocd-gpg-keys-cm
+    namespace: default
+    resourceVersion: "417180"
+    uid: 0ede3fac-3272-443c-bda4-7e550485ca67
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:40Z"
+    labels:
+      app.kubernetes.io/component: notifications-controller
+      app.kubernetes.io/name: argocd-notifications-controller
+      app.kubernetes.io/part-of: argocd
+    name: argocd-notifications-cm
+    namespace: default
+    resourceVersion: "417181"
+    uid: c7456144-b8e7-4c1a-8490-35d87da7cbf0
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:40Z"
+    labels:
+      app.kubernetes.io/name: argocd-rbac-cm
+      app.kubernetes.io/part-of: argocd
+    name: argocd-rbac-cm
+    namespace: default
+    resourceVersion: "417182"
+    uid: ab970fcc-5a0a-48e2-b4cf-a8013810c843
+- apiVersion: v1
+  data:
+    ssh_known_hosts: |
+      # This file was automatically generated by hack/update-ssh-known-hosts.sh. DO NOT EDIT
+      [ssh.github.com]:443 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=
+      [ssh.github.com]:443 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
+      [ssh.github.com]:443 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiiphnt+VTTvDP6mHBL9j1aNUkY4Ue1gvwnGLVlOhGeYrnZaMgRK6+PKCUXaDbC7qtbW8gIkhL7aGCsOr/C56SJMy/BCZfxd1nWzAOxSDPgVsmerOBYfNqltV9/hWCqBywINIR+5dIg6JTJ72pcEpEjcYgXkE2YEFXV1JHnsKgbLWNlhScqb2UmyRkQyytRLtL+38TGxkxCflmO+5Z8CSSNY7GidjMIZ7Q4zMjA2n1nGrlTDkzwDCsw+wqFPGQA179cnfGWOWRVruj16z6XyvxvjJwbz0wQZ75XK5tKSb7FNyeIEs4TT4jk+S4dhPeAUC5y+bDYirYgM4GC7uEnztnZyaVWQ7B381AK4Qdrwt51ZqExKbQpTUNn+EjqoTwvqNj4kqx5QUCI0ThS/YkOxJCXmPUWZbhjpCg56i+2aB6CmK2JGhn57K5mj0MNdBXA4/WnwH6XoPWJzK5Nyu2zB3nAZp+S5hpQs+p1vN1/wsjk=
+      bitbucket.org ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBPIQmuzMBuKdWeF4+a2sjSSpBK0iqitSQ+5BM9KhpexuGt20JpTVM7u5BDZngncgrqDMbWdxMWWOGtZ9UgbqgZE=
+      bitbucket.org ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIazEu89wgQZ4bqs3d63QSMzYVa0MuJ2e2gKTKqu+UUO
+      bitbucket.org ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDQeJzhupRu0u0cdegZIa8e86EG2qOCsIsD1Xw0xSeiPDlCr7kq97NLmMbpKTX6Esc30NuoqEEHCuc7yWtwp8dI76EEEB1VqY9QJq6vk+aySyboD5QF61I/1WeTwu+deCbgKMGbUijeXhtfbxSxm6JwGrXrhBdofTsbKRUsrN1WoNgUa8uqN1Vx6WAJw1JHPhglEGGHea6QICwJOAr/6mrui/oB7pkaWKHj3z7d1IC4KWLtY47elvjbaTlkN04Kc/5LFEirorGYVbt15kAUlqGM65pk6ZBxtaO3+30LVlORZkxOh+LKL/BvbZ/iRNhItLqNyieoQj/uh/7Iv4uyH/cV/0b4WDSd3DptigWq84lJubb9t/DnZlrJazxyDCulTmKdOR7vs9gMTo+uoIrPSb8ScTtvw65+odKAlBj59dhnVp9zd7QUojOpXlL62Aw56U4oO+FALuevvMjiWeavKhJqlR7i5n9srYcrNV7ttmDw7kf/97P5zauIhxcjX+xHv4M=
+      github.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=
+      github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
+      github.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiiphnt+VTTvDP6mHBL9j1aNUkY4Ue1gvwnGLVlOhGeYrnZaMgRK6+PKCUXaDbC7qtbW8gIkhL7aGCsOr/C56SJMy/BCZfxd1nWzAOxSDPgVsmerOBYfNqltV9/hWCqBywINIR+5dIg6JTJ72pcEpEjcYgXkE2YEFXV1JHnsKgbLWNlhScqb2UmyRkQyytRLtL+38TGxkxCflmO+5Z8CSSNY7GidjMIZ7Q4zMjA2n1nGrlTDkzwDCsw+wqFPGQA179cnfGWOWRVruj16z6XyvxvjJwbz0wQZ75XK5tKSb7FNyeIEs4TT4jk+S4dhPeAUC5y+bDYirYgM4GC7uEnztnZyaVWQ7B381AK4Qdrwt51ZqExKbQpTUNn+EjqoTwvqNj4kqx5QUCI0ThS/YkOxJCXmPUWZbhjpCg56i+2aB6CmK2JGhn57K5mj0MNdBXA4/WnwH6XoPWJzK5Nyu2zB3nAZp+S5hpQs+p1vN1/wsjk=
+      gitlab.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFSMqzJeV9rUzU4kWitGjeR4PWSa29SPqJ1fVkhtj3Hw9xjLVXVYrU9QlYWrOLXBpQ6KWjbjTDTdDkoohFzgbEY=
+      gitlab.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAfuCHKVTjquxvt6CM6tdG4SLp1Btn/nOeHHE5UOzRdf
+      gitlab.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsj2bNKTBSpIYDEGk9KxsGh3mySTRgMtXL583qmBpzeQ+jqCMRgBqB98u3z++J1sKlXHWfM9dyhSevkMwSbhoR8XIq/U0tCNyokEi/ueaBMCvbcTHhO7FcwzY92WK4Yt0aGROY5qX2UKSeOvuP4D6TPqKF1onrSzH9bx9XUf2lEdWT/ia1NEKjunUqu1xOB/StKDHMoX4/OKyIzuS0q/T1zOATthvasJFoPrAjkohTyaDUz2LN5JoH839hViyEG82yB+MjcFV5MU3N1l1QL3cVUCh93xSaua1N85qivl+siMkPGbO5xR/En4iEY6K2XPASUEMaieWVNTRCtJ4S8H+9
+      ssh.dev.azure.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7Hr1oTWqNqOlzGJOfGJ4NakVyIzf1rXYd4d7wo6jBlkLvCA4odBlL0mDUyZ0/QUfTTqeu+tm22gOsv+VrVTMk6vwRU75gY/y9ut5Mb3bR5BV58dKXyq9A9UeB5Cakehn5Zgm6x1mKoVyf+FFn26iYqXJRgzIZZcZ5V6hrE0Qg39kZm4az48o0AUbf6Sp4SLdvnuMa2sVNwHBboS7EJkm57XQPVU3/QpyNLHbWDdzwtrlS+ez30S3AdYhLKEOxAG8weOnyrtLJAUen9mTkol8oII1edf7mWWbWVf0nBmly21+nZcmCTISQBtdcyPaEno7fFQMDD26/s0lfKob4Kw8H
+      vs-ssh.visualstudio.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7Hr1oTWqNqOlzGJOfGJ4NakVyIzf1rXYd4d7wo6jBlkLvCA4odBlL0mDUyZ0/QUfTTqeu+tm22gOsv+VrVTMk6vwRU75gY/y9ut5Mb3bR5BV58dKXyq9A9UeB5Cakehn5Zgm6x1mKoVyf+FFn26iYqXJRgzIZZcZ5V6hrE0Qg39kZm4az48o0AUbf6Sp4SLdvnuMa2sVNwHBboS7EJkm57XQPVU3/QpyNLHbWDdzwtrlS+ez30S3AdYhLKEOxAG8weOnyrtLJAUen9mTkol8oII1edf7mWWbWVf0nBmly21+nZcmCTISQBtdcyPaEno7fFQMDD26/s0lfKob4Kw8H
+  kind: ConfigMap
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:40Z"
+    labels:
+      app.kubernetes.io/name: argocd-ssh-known-hosts-cm
+      app.kubernetes.io/part-of: argocd
+    name: argocd-ssh-known-hosts-cm
+    namespace: default
+    resourceVersion: "417183"
+    uid: 3352ad41-ccde-4a1e-9b97-97b7b724ad70
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:41Z"
+    labels:
+      app.kubernetes.io/name: argocd-tls-certs-cm
+      app.kubernetes.io/part-of: argocd
+    name: argocd-tls-certs-cm
+    namespace: default
+    resourceVersion: "417184"
+    uid: e87b86ab-4e64-4a6f-93ac-67ef77bb6668
+- apiVersion: v1
+  kind: Secret
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:41Z"
+    labels:
+      app.kubernetes.io/component: notifications-controller
+      app.kubernetes.io/name: argocd-notifications-controller
+      app.kubernetes.io/part-of: argocd
+    name: argocd-notifications-secret
+    namespace: default
+    resourceVersion: "417185"
+    uid: c49a5f50-38f0-4f41-8e2f-2811f7636255
+  type: Opaque
+- apiVersion: v1
+  data:
+    admin.password: JDJhJDEwJEppbjBTZC5DcGFBZXJhOTJsM1JJemVRLk10UWh3TlJBZ3YwVGxtb01CczZIWDZ6VTRLeHJt
+    admin.passwordMtime: MjAyNi0wNy0xNVQwMjoxODoxMFo=
+    server.secretkey: Nk9MRWg2U3RxSER2VmpmL1F2NEZ3c3RYVzc2VGdXaXBaV1krMzVmS09sQT0=
+    tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURaakNDQWs2Z0F3SUJBZ0lSQVBXWi9XeGVqV1dFMEFFQWliajljdUF3RFFZSktvWklodmNOQVFFTEJRQXcKRWpFUU1BNEdBMVVFQ2hNSFFYSm5ieUJEUkRBZUZ3MHlOakEzTVRVd01qRTRNVEZhRncweU56QTNNVFV3TWpFNApNVEZhTUJJeEVEQU9CZ05WQkFvVEIwRnlaMjhnUTBRd2dnRWlNQTBHQ1NxR1NJYjNEUUVCQVFVQUE0SUJEd0F3CmdnRUtBb0lCQVFDeklSMWJ6L203Qk41N1NTT0FhWStHbElBeUpEbGcyMWJxc3d0UFR4TEdiSmNQNUZVQkNNVSsKdTBJNGZ1UlAzNm01cmdIVXVzeWF4RzlyQkNEcVQxdFp6MDlqTDF4Q3Fya04wcEpuakJNUFpuWXJwUDdHeDVWdAp4VHh6VTRUK3V1Z2syNEpWZDBUczhZUDhkZk1OQ3lZUnN6K1NOMGJTQTJIK0sxTmNnVWpvWm5kMHVpbVBFeFJJCnZiMzE3TFZOUGV5U1NPM3RwYkVwK3NGOEd3WW1yTEFxWWFFb2EyL3VtZDhTQU43Z1VCeUdQeklIYjEvTllyWjAKeGlkd0FscGI5L2VuTk5KUVpyQWRnVUpaUE9rZTJVSzMzWVJ4c3g2anZ0NFdVVi8xVlc4emVHNk0zZUpadmpuMgozdlh4MS9iRzJjcHFxcWdLWFgxZmsrV1lOZm1VZTMrUkFnTUJBQUdqZ2JZd2diTXdEZ1lEVlIwUEFRSC9CQVFECkFnV2dNQk1HQTFVZEpRUU1NQW9HQ0NzR0FRVUZCd01CTUF3R0ExVWRFd0VCL3dRQ01BQXdmZ1lEVlIwUkJIY3cKZFlJSmJHOWpZV3hvYjNOMGdnMWhjbWR2WTJRdGMyVnlkbVZ5Z2hWaGNtZHZZMlF0YzJWeWRtVnlMbVJsWm1GMQpiSFNDR1dGeVoyOWpaQzF6WlhKMlpYSXVaR1ZtWVhWc2RDNXpkbU9DSjJGeVoyOWpaQzF6WlhKMlpYSXVaR1ZtCllYVnNkQzV6ZG1NdVkyeDFjM1JsY2k1c2IyTmhiREFOQmdrcWhraUc5dzBCQVFzRkFBT0NBUUVBWS9zTCtxQVgKeS8yZmt0QXBSMENIMVlQajVGZndJcjVQeFlwVmRVVWNtdzFpUzFoYkJiZjRrT240Z1JzR1BzT1ZvTWxtMDJXUgphT0NXWDFpTXd0aWNDOEdyS3hXRCs4YnVDanFqRDU3VVd4R1dnNWZKQ3doUVBpTlU3YnlTMEJkZGVmMGYxZks1CjRDVFh4aGRVYmFqcHhiSytvS0NqSTgxQzNLREoyTTZJaXpBY2FkdG1HNzZVOHNXUTIvKzB0VXFOMGJCa3FsY04KMDhIY08ranlSY0hBMVN1Y3UwUTRlNnN5MVpIUG5IM1MrcGJJTE41RWZuYlJqT3BMM09tK0lZV2EvQmZidk4yVApJZE5YZEQ1QWFkc2VEWjJuN2J6anF6dEVEdGtjQUVVSVJtK3hZcGpIV2tmMWdOVnZySWZnVDVYQ3VpdzcvbTkyCmZnZHFTTjZuUlJXTkhBPT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+    tls.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcEFJQkFBS0NBUUVBc3lFZFc4LzV1d1RlZTBramdHbVBocFNBTWlRNVlOdFc2ck1MVDA4U3hteVhEK1JWCkFRakZQcnRDT0g3a1Q5K3B1YTRCMUxyTW1zUnZhd1FnNms5YldjOVBZeTljUXFxNURkS1NaNHdURDJaMks2VCsKeHNlVmJjVThjMU9FL3Jyb0pOdUNWWGRFN1BHRC9IWHpEUXNtRWJNL2tqZEcwZ05oL2l0VFhJRkk2R1ozZExvcApqeE1VU0wyOTlleTFUVDNza2tqdDdhV3hLZnJCZkJzR0pxeXdLbUdoS0d0djdwbmZFZ0RlNEZBY2hqOHlCMjlmCnpXSzJkTVluY0FKYVcvZjNwelRTVUdhd0hZRkNXVHpwSHRsQ3Q5MkVjYk1lbzc3ZUZsRmY5VlZ2TTNodWpOM2kKV2I0NTl0NzE4ZGYyeHRuS2FxcW9DbDE5WDVQbG1EWDVsSHQva1FJREFRQUJBb0lCQUVvUUlneHBGRTlRTnhEdwpiNTVUaHdWVTl5QkVPL2toRjNIWTc0OHVHWXd6TDg1aFVRZ3BjU3g3em1oL2hyVER2SEJLVXZWNitzZnUra1pjCklhUGZoZHkvUzRxdDlVNlhPZ1pPRHp5Qy9RcDhDZFlIMVZPcEI4Nm9JMU5uci9DR3BSOUFKMFpoRnYyRTZsYUQKQ2loVmVMc095dlVRcDlhRGtZdStyQ3Z1UkkvWnhEVVV2VzJxOTBpZTByNkV5U1VFbjVxditpWTIwcUVSZXhEOAphR2pCOGR3OW9lMFNlaytIeE81Skh0WWs3TU4xekNzdDBMekJCa2pyZjAzNm8rK1NEVytYVkhucG1IeUNHVGRVCkkzZDNTRFBXVjBiS0JIbytjckMzMzhaNXlSYU5NRG9MTk1UNExWWDNGbzQ4NHVQaVE5RWlhU1FLMlluYUNzM2oKM2p2aDloVUNnWUVBdzhnSjFWZTg4SGYrZU0vemVrZDNkdmx3MEtpbTdkYTBaOXV4a1hOSjZ1OWhrVit3cjZMTQpsZFZkbzRNTllGd0lDeldQWTJkcEtac2xFam9hZmkwYjFidVpPNTlKcnJCbzR0RHR0ckdnVHlUTEpzcVgyMklECkdDbXZBQ1BncmdNbDQ1QzYxUUVmbWwxaDdBckphcGFLaEZ1SjBNMTQrQmpQWEtjelhtT2dJS3NDZ1lFQTZqbmgKL1dpR3Jvd0l2K2dNbzVTUlNzdjRBc0lHTUxOVHNGS0F4ekh4RlJSTzB3QmN2QzFKSEZLZkh2Mm5ZV3JxbFRTQgo1ZzhZOUJWN1FMWkZHNjJQbTN3MnlzMWNXMlRqbzcxYW5JMzZ2aGRCci84TkJkT09sZy9CUU81TnRrcmxVQUxjCkJ2eC9SZ3VFS0Q2M1pKRmh0V25aMGkzY21Sd1JuSGhiMWttZCtMTUNnWUE4akNUZVllQUF6bHRZcVpjMi9kc28KWkVSTGc1ejhlU1laNkl1bDIrM0VSbnY2SlluVEI1b1Z6SUxGQ3NhY1Fsb0tmV24yNkFoUjRiVTVTZGJmcHJ1eApBZStGek9GUXNTWCszM1preGRJNko3cmNLRk9HZVcxVGo3Q2JibjBSMDg5bjdWNmFlVnA0dHVDTnkxZzNLbzkwCkY0c3JsQ0FST2pzSEFINldkbUVUT1FLQmdRQ2ViQzRkZnlCeFdNZm1QU2FuVWFxQUE3dW82ZURUK2NibUlMZDMKZzZFRFYrd0VyVjhMN0RsaURjUVFheEpXUXNHTno2ajRtVWVRZUNNWVh2QVpTMmd4aTI5bjlrUzhrRjJqOTBRZApWYTY5K2U3MUFqYWx0VFRnN0tFU3NOd2hLMEUwditwZ1UxSW1aMDJwQnRwMkRCc2hZQW56TGcvaUEya3FBd0ppCnl3SXRId0tCZ1FDR09kYWxDckJMK0xrdUFqSFR6QTZZVXk1a0d5SDRBeFh2Z1F1dTljMWJGT3hqdHdkSlJuS3AKM3crOHZodjN6aTBzYlpCM1lOQitXVjdyd1BweU5HaEVZVXdmalc3R3hWNGFMbGdhWUZMRW9vTzJqSHdMQll2SgprYXZzbU90cnp4SkNhUVcvVDBsT3ZVNkhxNG9rNGdXRnRkeHFucnQ2VDU0K1BBYnZiSGNTNVE9PQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo=
+  kind: Secret
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:41Z"
+    labels:
+      app.kubernetes.io/name: argocd-secret
+      app.kubernetes.io/part-of: argocd
+    name: argocd-secret
+    namespace: default
+    resourceVersion: "417418"
+    uid: 42ea32e0-34bc-4a0e-b2ce-82568d6700ac
+  type: Opaque
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:37Z"
+    labels:
+      app.kubernetes.io/component: application-controller
+      app.kubernetes.io/name: argocd-application-controller
+      app.kubernetes.io/part-of: argocd
+    name: argocd-application-controller
+    namespace: default
+    resourceVersion: "417135"
+    uid: 3de167f2-e3a7-4e36-a4be-90980392e5ad
+  rules:
+  - apiGroups:
+    - ""
+    resources:
+    - secrets
+    - configmaps
+    verbs:
+    - get
+    - list
+    - watch
+  - apiGroups:
+    - argoproj.io
+    resources:
+    - applications
+    - applicationsets
+    - appprojects
+    verbs:
+    - create
+    - get
+    - list
+    - watch
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - ""
+    resources:
+    - events
+    verbs:
+    - create
+    - list
+  - apiGroups:
+    - apps
+    resources:
+    - deployments
+    verbs:
+    - get
+    - list
+    - watch
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:37Z"
+    labels:
+      app.kubernetes.io/component: applicationset-controller
+      app.kubernetes.io/name: argocd-applicationset-controller
+      app.kubernetes.io/part-of: argocd
+    name: argocd-applicationset-controller
+    namespace: default
+    resourceVersion: "417136"
+    uid: 94d59d33-e3b2-483c-ac45-7b0ed8d826d7
+  rules:
+  - apiGroups:
+    - argoproj.io
+    resources:
+    - applications
+    - applicationsets
+    - applicationsets/finalizers
+    verbs:
+    - create
+    - delete
+    - get
+    - list
+    - patch
+    - update
+    - watch
+  - apiGroups:
+    - argoproj.io
+    resources:
+    - appprojects
+    verbs:
+    - get
+    - list
+    - watch
+  - apiGroups:
+    - argoproj.io
+    resources:
+    - applicationsets/status
+    verbs:
+    - get
+    - patch
+    - update
+  - apiGroups:
+    - ""
+    resources:
+    - events
+    verbs:
+    - create
+    - get
+    - list
+    - patch
+    - watch
+  - apiGroups:
+    - ""
+    resources:
+    - secrets
+    - configmaps
+    verbs:
+    - get
+    - list
+    - watch
+  - apiGroups:
+    - coordination.k8s.io
+    resources:
+    - leases
+    verbs:
+    - create
+  - apiGroups:
+    - coordination.k8s.io
+    resourceNames:
+    - 58ac56fa.applicationsets.argoproj.io
+    resources:
+    - leases
+    verbs:
+    - get
+    - update
+    - create
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:37Z"
+    labels:
+      app.kubernetes.io/component: dex-server
+      app.kubernetes.io/name: argocd-dex-server
+      app.kubernetes.io/part-of: argocd
+    name: argocd-dex-server
+    namespace: default
+    resourceVersion: "417137"
+    uid: e4b2caa9-5238-4d5b-a372-6d8bbff357d1
+  rules:
+  - apiGroups:
+    - ""
+    resources:
+    - secrets
+    - configmaps
+    verbs:
+    - get
+    - list
+    - watch
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:37Z"
+    labels:
+      app.kubernetes.io/component: notifications-controller
+      app.kubernetes.io/name: argocd-notifications-controller
+      app.kubernetes.io/part-of: argocd
+    name: argocd-notifications-controller
+    namespace: default
+    resourceVersion: "417138"
+    uid: 007ccab5-ab72-4b44-bce9-eda4c8611f78
+  rules:
+  - apiGroups:
+    - argoproj.io
+    resources:
+    - applications
+    - appprojects
+    verbs:
+    - get
+    - list
+    - watch
+    - update
+    - patch
+  - apiGroups:
+    - ""
+    resources:
+    - configmaps
+    - secrets
+    verbs:
+    - list
+    - watch
+  - apiGroups:
+    - ""
+    resourceNames:
+    - argocd-notifications-cm
+    resources:
+    - configmaps
+    verbs:
+    - get
+  - apiGroups:
+    - ""
+    resourceNames:
+    - argocd-notifications-secret
+    resources:
+    - secrets
+    verbs:
+    - get
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:37Z"
+    labels:
+      app.kubernetes.io/component: redis
+      app.kubernetes.io/name: argocd-redis
+      app.kubernetes.io/part-of: argocd
+    name: argocd-redis
+    namespace: default
+    resourceVersion: "417139"
+    uid: c3272009-0f33-4f7d-8d62-61fbc403890c
+  rules:
+  - apiGroups:
+    - ""
+    resourceNames:
+    - argocd-redis
+    resources:
+    - secrets
+    verbs:
+    - get
+  - apiGroups:
+    - ""
+    resources:
+    - secrets
+    verbs:
+    - create
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:37Z"
+    labels:
+      app.kubernetes.io/component: server
+      app.kubernetes.io/name: argocd-server
+      app.kubernetes.io/part-of: argocd
+    name: argocd-server
+    namespace: default
+    resourceVersion: "417140"
+    uid: ce7766f1-beb7-40dc-9bd4-d91b6502a909
+  rules:
+  - apiGroups:
+    - ""
+    resources:
+    - secrets
+    - configmaps
+    verbs:
+    - create
+    - get
+    - list
+    - watch
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - argoproj.io
+    resources:
+    - applications
+    - appprojects
+    - applicationsets
+    verbs:
+    - create
+    - get
+    - list
+    - watch
+    - update
+    - delete
+    - patch
+  - apiGroups:
+    - ""
+    resources:
+    - events
+    verbs:
+    - create
+    - list
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:38Z"
+    labels:
+      app.kubernetes.io/component: application-controller
+      app.kubernetes.io/name: argocd-application-controller
+      app.kubernetes.io/part-of: argocd
+    name: argocd-application-controller
+    namespace: default
+    resourceVersion: "417153"
+    uid: f1f7cb52-7c56-46c7-8da8-380319f486ae
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: argocd-application-controller
+  subjects:
+  - kind: ServiceAccount
+    name: argocd-application-controller
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:38Z"
+    labels:
+      app.kubernetes.io/component: applicationset-controller
+      app.kubernetes.io/name: argocd-applicationset-controller
+      app.kubernetes.io/part-of: argocd
+    name: argocd-applicationset-controller
+    namespace: default
+    resourceVersion: "417154"
+    uid: 2213e396-f817-4285-83bf-3cb0eb77de1f
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: argocd-applicationset-controller
+  subjects:
+  - kind: ServiceAccount
+    name: argocd-applicationset-controller
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:38Z"
+    labels:
+      app.kubernetes.io/component: dex-server
+      app.kubernetes.io/name: argocd-dex-server
+      app.kubernetes.io/part-of: argocd
+    name: argocd-dex-server
+    namespace: default
+    resourceVersion: "417155"
+    uid: f6c2aa5d-8413-4e2c-aac2-741ac51f97f5
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: argocd-dex-server
+  subjects:
+  - kind: ServiceAccount
+    name: argocd-dex-server
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:38Z"
+    labels:
+      app.kubernetes.io/component: notifications-controller
+      app.kubernetes.io/name: argocd-notifications-controller
+      app.kubernetes.io/part-of: argocd
+    name: argocd-notifications-controller
+    namespace: default
+    resourceVersion: "417157"
+    uid: fe2428f1-5ca6-4819-83f4-ffcddc15bb1b
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: argocd-notifications-controller
+  subjects:
+  - kind: ServiceAccount
+    name: argocd-notifications-controller
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:38Z"
+    labels:
+      app.kubernetes.io/component: redis
+      app.kubernetes.io/name: argocd-redis
+      app.kubernetes.io/part-of: argocd
+    name: argocd-redis
+    namespace: default
+    resourceVersion: "417159"
+    uid: cfa5e77d-1ffc-497e-897a-e393c62ff0cf
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: argocd-redis
+  subjects:
+  - kind: ServiceAccount
+    name: argocd-redis
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:38Z"
+    labels:
+      app.kubernetes.io/component: server
+      app.kubernetes.io/name: argocd-server
+      app.kubernetes.io/part-of: argocd
+    name: argocd-server
+    namespace: default
+    resourceVersion: "417160"
+    uid: e3ea039a-080c-43f0-98a3-55c5c3255a82
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: argocd-server
+  subjects:
+  - kind: ServiceAccount
+    name: argocd-server
+- apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:36Z"
+    labels:
+      app.kubernetes.io/component: application-controller
+      app.kubernetes.io/name: argocd-application-controller
+      app.kubernetes.io/part-of: argocd
+    name: argocd-application-controller
+    namespace: default
+    resourceVersion: "417127"
+    uid: 815b9f45-51a1-428d-9286-aa43bd1a4bb4
+- apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:36Z"
+    labels:
+      app.kubernetes.io/component: applicationset-controller
+      app.kubernetes.io/name: argocd-applicationset-controller
+      app.kubernetes.io/part-of: argocd
+    name: argocd-applicationset-controller
+    namespace: default
+    resourceVersion: "417128"
+    uid: 9044f952-1ea3-4190-9cab-659c9179bcfe
+- apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:36Z"
+    labels:
+      app.kubernetes.io/component: dex-server
+      app.kubernetes.io/name: argocd-dex-server
+      app.kubernetes.io/part-of: argocd
+    name: argocd-dex-server
+    namespace: default
+    resourceVersion: "417129"
+    uid: 98ae5650-0c42-45bc-857f-612c9b874c85
+- apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:36Z"
+    labels:
+      app.kubernetes.io/component: notifications-controller
+      app.kubernetes.io/name: argocd-notifications-controller
+      app.kubernetes.io/part-of: argocd
+    name: argocd-notifications-controller
+    namespace: default
+    resourceVersion: "417130"
+    uid: 83bd8de0-852f-4e3c-bd48-33eb72b3b15a
+- apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:36Z"
+    labels:
+      app.kubernetes.io/component: redis
+      app.kubernetes.io/name: argocd-redis
+      app.kubernetes.io/part-of: argocd
+    name: argocd-redis
+    namespace: default
+    resourceVersion: "417131"
+    uid: 8c9f3f01-d3ea-47e5-82fb-d71e5281747f
+- apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:36Z"
+    labels:
+      app.kubernetes.io/component: repo-server
+      app.kubernetes.io/name: argocd-repo-server
+      app.kubernetes.io/part-of: argocd
+    name: argocd-repo-server
+    namespace: default
+    resourceVersion: "417132"
+    uid: c22e5172-7ae5-43af-ba4f-fc7829f65e4d
+- apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    creationTimestamp: "2026-07-15T02:17:36Z"
+    labels:
+      app.kubernetes.io/component: server
+      app.kubernetes.io/name: argocd-server
+      app.kubernetes.io/part-of: argocd
+    name: argocd-server
+    namespace: default
+    resourceVersion: "417133"
+    uid: 5cb69fa8-11ab-4752-927c-fcf32243bd13
+kind: List
+metadata:
+  resourceVersion: ""

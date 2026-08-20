@@ -1,0 +1,12 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "java-maven-app.fullname" . }}-pdb
+  labels:
+    {{- include "java-maven-app.labels" . | nindent 4 }}
+spec:
+  minAvailable: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/name: {{ include "java-maven-app.name" . }}
