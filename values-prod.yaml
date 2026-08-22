@@ -123,7 +123,11 @@ volumeMounts: []
 
 nodeSelector: {}
 
-tolerations: []
+tolerations:
+  - key: workload
+    operator: Equal
+    value: java-app
+    effect: NoSchedule
 
 affinity:
   nodeAffinity:
